@@ -24,6 +24,7 @@ class Player:
 		self.name = name
 		self.board = Board()
 		self.iscomputer = False
+		self.ship_list = [Ship("Battleship",4,"B1"),Ship("Destroyer",2,"D1")]
 
 
 class Ship:
@@ -39,6 +40,7 @@ class Computer:
 		self.name = name
 		self.board = Board()
 		self.iscomputer = True
+		self.ship_list = [Ship("Battleship",4,"B1"),Ship("Destroyer",2,"D1")]
 
 	def choose_coordinates(self,ship):
 		coordx = random.randint(0,9)
@@ -49,7 +51,6 @@ class Computer:
 
 class Gameplay:
 	def __init__(self):
-		self.ship_list = [Ship("Battleship",4,"B1"),Ship("Destroyer",2,"D1")]
 		self.active_player = Player("Player 1")
 		self.opposing_player = Computer("Computer")
 
@@ -75,7 +76,6 @@ class Gameplay:
 
 	def place_ships(self,coordx,coordy,direction,ship):
 		get_coords = self.get_proposed_coordinates(coordx,coordy,direction,ship.length)
-		print(get_coords)
 		for coord in get_coords:
 			y,x = coord
 			if y >= 10 or y < 0 or x < 0 or x >= 10:
@@ -84,33 +84,42 @@ class Gameplay:
 				self.active_player.board.board[y][x] = ship.short
 			else:
 				return False
-		print(self.active_player.board.board)
-		return True
-	
-				
-
-
+		return True, self.active_player.board.board
 
 
 	def guess(self,coords):
-		#search array
-		# if not X,M,O:
-		# 	self.hit(coords)
-		# 	return True
-		# else:
-		# 	self.miss(coords)
-		# 	return False
-		pass
+		y,x = coords
+		whats_there = self.opposing_player.board.board[y][x]
+		if whats_there == "M":
+			#Could implement a different message, but
+			#for now just tell user they have missed
+			return False
+		elif whats_there == "X":
+			#Could implement a different message, but
+			#for now just tell user they have missed
+			return False
+		elif whats_there == "O":
+			self.miss(coords)
+			return False
+		else:
+			self.hit(coords,whats_there)
+			return True
 
+	def hit(self,coords,whats_there):
+		ship_short = whats_there
+		#Looks through the player's ship list,and amends
+		for ship in self.opposing_player.ship_list:
+			if ship.ship_short == whats_there:
+				self.opposing_player.board.board[y][x] = "X"
+				ship.remaining_pieces -= 1
+		#needs a check that will remove the ship from the player's
 
-
-	def hit(self,coords):
 		#find ship short e.g."D1"
 		#change that spot to an x
 		#reduce ship (e.g. D1) spots by 1
 		#check if ship remaining spots = 0
 		#check if ship_list length = 0
-		pass
+		
 
 
 	def miss(self,coords):
