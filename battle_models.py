@@ -24,7 +24,14 @@ class Player:
 		self.name = name
 		self.board = Board()
 		self.iscomputer = False
+		self.store_last_guess()
 		self.ship_list = [Ship("Aircraft Carrier",5,"A"), Ship("Battleship",4,"B"), Ship("Cruiser",3,"C"), Ship("Submarine",3,"S"), Ship("Destroyer",2,"D")]
+
+	def store_last_guess(self,coordinate=(0,0),whats_there="O",sunk=False):
+		self.last_coordinate_chosen = coordinate
+		self.last_coordinate_type = whats_there
+		self.was_ship_sunk = sunk
+
 
 class Ship:
 	def __init__(self,name,length,short):
@@ -34,11 +41,14 @@ class Ship:
 		self.remaining_pieces = length
 
 
+
+
 class Computer:
 	def __init__(self, name):
 		self.name = name
 		self.board = Board()
 		self.iscomputer = True
+		self.store_last_guess()
 		self.ship_list = [Ship("Aircraft Carrier",5,"A"), Ship("Battleship",4,"B"), Ship("Cruiser",3,"C"), Ship("Submarine",3,"S"), Ship("Destroyer",2,"D")]
 
 	def choose_starting_coordinates(self,ship):
@@ -47,10 +57,35 @@ class Computer:
 		direction = random.choice(['u','d','l','r'])
 		return coordx,coordy, direction
 
+	# def choose_coordinates(self):
+	# 	coordy = random.randint(0,9)
+	# 	coordx = random.randint(0,9)
+	# 	return coordy, coordx
+
+	def store_last_guess(self,coordinate=(0,0),whats_there="O",sunk=None):
+		self.last_coordinate_chosen = coordinate
+		self.last_coordinate_type = whats_there
+		self.was_ship_sunk = sunk
+
 	def choose_coordinates(self):
-		coordy = random.randint(0,9)
-		coordx = random.randint(0,9)
-		return coordy, coordx
+		print(self.last_coordinate_chosen,self.last_coordinate_type,self.was_ship_sunk)
+		coordy,coordx = self.last_coordinate_chosen
+		if self.last_coordinate_type in ["A","B","C","S","D"] and self.was_ship_sunk == None:
+			x_or_y = random.choice(["x","y"])
+			direction  = random.choice([-1,1])
+			if x_or_y == "y":
+				coordy += direction
+			elif x_or_y == "x":
+				coordx += direction
+			if coordx < 0 or coordx > 9 or coordy < 0 or coordy > 9:
+				return self.choose_coordinates()
+			return coordy, coordx
+		else:
+			coordy = random.randint(0,9)
+			coordx = random.randint(0,9)
+			return coordy, coordx
+
+
 
 
 class Gameplay:
@@ -108,17 +143,22 @@ class Gameplay:
 		if whats_there == "M":
 			#Could implement a different message, but
 			#for now just tell user they have missed
+			self.active_player.store_last_guess(coords,whats_there,False)
 			return False, None
 		elif whats_there == "X":
 			#Could implement a different message, but
 			#for now just tell user they have missed
+			self.active_player.store_last_guess(coords,whats_there,False)
 			return False, None
 		elif whats_there == "O":
 			self.miss(coords)
+			self.active_player.store_last_guess(coords,whats_there,False)
 			return False, None
 		else:
 			ship_sunk = self.hit(coords,whats_there)
+			self.active_player.store_last_guess(coords,whats_there,ship_sunk)
 			return True, ship_sunk
+
 
 	def hit(self,coords,whats_there):
 		''' Once a hit has been determined, changes

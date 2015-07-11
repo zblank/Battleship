@@ -36,19 +36,16 @@ class Controller:
 				else:
 					coordx, coordy, direction = self.game_play.active_player.choose_starting_coordinates(ship)
 				valid = self.game_play.check_valid_coordinates(coordx,coordy,direction,ship)
-		#The lines below are only for debugging purposes, so we can see both the users
-		#and computers boards after all ships have been placed
-		print("This is for display purposes")
-		self.v.display_own_board(self.get_active_player_board())
 
 
 	def player_turn(self):
 		if self.game_play.active_player.iscomputer == True:
 			coords = self.game_play.active_player.choose_coordinates()
 		else:
-			coords = self.v.ask_coords()
+			coords = self.v.ask_coords(self.game_play.opposing_player,self.game_play.active_player)
 		hit_miss, ship_sunk = self.game_play.guess(coords)
-		self.v.hit_miss(hit_miss, ship_sunk, self.game_play.opposing_player,self.game_play.active_player)
+		self.v.hit_miss(hit_miss, ship_sunk, self.game_play.opposing_player,self.game_play.active_player,coords)
+	
 		if self.game_play.opposing_player.ship_list == []:
 			return self.game_over()
 		else:
