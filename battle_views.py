@@ -5,31 +5,37 @@ class Views:
 		pass
 
 	def display_own_board(self,board):
-		os.system('clear')
 		for x in board:
 			print(x)
 		print("")
 
 	def display_computers_board(self,board):
-		os.system('clear')
+		for x in board:
+			print(x)
+		print("")
+
 
 	def place_ship(self,ship):
-		coordx = int(input("Starting coordinate? "))
-		coordy = int(input("Starting coordinate? "))
-		direction = input("Direction")
+		coordy = int(input("What is the y starting coordinate? "))
+		coordx = int(input("What is the x starting coordinate? "))
+		direction = input("Direction: ")
 		return coordx, coordy, direction
 
 	def ask_coords(self):
 		coordy = None
 		coordx = None
 		while coordy not in range(0,10):
-			coordy = int(input("What is the y coordinate"))
+			coordy = int(input("What is the y coordinate "))
 		while coordx not in range(0,10):
-			coordx = int(input("What is the x coordinate"))
+			coordx = int(input("What is the x coordinate "))
 		return coordy, coordx
 
-	def hit_miss(self, hit_miss):
+	def hit_miss(self, hit_miss,opposing_board,active_board):
+		print("Opposition's board")
+		self.display_computers_board(opposing_board)
+		print("Player's board")
+		self.display_own_board(active_board)
 		if hit_miss == True:
-			print("You hit")
+			print("You hit!")
 		else:
-			print ("You missed")
+			print ("You missed!")

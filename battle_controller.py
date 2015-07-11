@@ -29,19 +29,20 @@ class Controller:
 				if self.game_play.active_player.iscomputer == False:
 					coordx, coordy, direction = self.v.place_ship(ship)
 				else:
-					coordx, coordy, direction = self.game_play.active_player.choose_coordinates(ship)
-				valid,board = self.game_play.place_ships(coordx,coordy,direction,ship)
-		self.v.display_own_board(board)
+					coordx, coordy, direction = self.game_play.active_player.choose_starting_coordinates(ship)
+				valid = self.game_play.place_ships(coordx,coordy,direction,ship)
+		self.v.display_own_board(self.get_active_player_board())
 
 
 	def player_turn(self):
 		if self.game_play.active_player.iscomputer == True:
-			pass
-			#coords = models.guess(coords)
-			# hit_miss = models.guess(coords)
+			coords = self.game_play.active_player.choose_coordinates()
 		else:
 			coords = self.v.ask_coords()
 		hit_miss = self.game_play.guess(coords)
+		self.v.hit_miss(hit_miss,self.get_opposing_player_board(),self.get_active_player_board())
+		self.game_play.switch_players()
+		return self.player_turn()
 
 		
 		# views.hit_miss(hit_miss)

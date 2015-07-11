@@ -42,11 +42,16 @@ class Computer:
 		self.iscomputer = True
 		self.ship_list = [Ship("Battleship",4,"B1"),Ship("Destroyer",2,"D1")]
 
-	def choose_coordinates(self,ship):
+	def choose_starting_coordinates(self,ship):
 		coordx = random.randint(0,9)
 		coordy = random.randint(0,9)
 		direction = random.choice(['u','d','l','r'])
 		return coordx,coordy, direction
+
+	def choose_coordinates(self):
+		coordy = random.randint(0,9)
+		coordx = random.randint(0,9)
+		return coordy, coordx
 
 
 class Gameplay:
@@ -84,8 +89,7 @@ class Gameplay:
 				self.active_player.board.board[y][x] = ship.short
 			else:
 				return False
-		return True, self.active_player.board.board
-
+		return True
 
 	def guess(self,coords):
 		y,x = coords
@@ -108,23 +112,25 @@ class Gameplay:
 	def hit(self,coords,whats_there):
 		ship_short = whats_there
 		#Looks through the player's ship list,and amends
+		y,x = coords
+		new_ship_list = []
 		for ship in self.opposing_player.ship_list:
-			if ship.ship_short == whats_there:
+			if ship.short == whats_there:
 				self.opposing_player.board.board[y][x] = "X"
 				ship.remaining_pieces -= 1
-		#needs a check that will remove the ship from the player's
+				if ship.remaining_pieces != 0:
+					new_ship_list.append(ship)
+				else:
+					pass
+					#pass some message to indicate ship sunk
+		self.opposing_player.ship_list = new_ship_list
 
-		#find ship short e.g."D1"
-		#change that spot to an x
-		#reduce ship (e.g. D1) spots by 1
-		#check if ship remaining spots = 0
-		#check if ship_list length = 0
-		
+
 
 
 	def miss(self,coords):
-		#change that spot to an M
-		pass
+		y,x = coords
+		self.opposing_player.board.board[y][x] = "M"
 
 
 
