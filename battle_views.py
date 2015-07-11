@@ -12,14 +12,26 @@ class Views:
 		pass
 
 	def display_own_board(self,board):
-		for x in board:
-			print(x)
-		print("")
+		xaxis1 = "  "
+		xaxis2 = "  "
+		for key, value in enumerate(board):
+			new_row = str(key) + "|"
+			for x in value:
+				new_row += "    " + x
+			print(new_row)
+			print("")
+			xaxis2 += "    " + str(key)
+			xaxis1 += "    "  + "-"
+		print(xaxis1)
+		print(xaxis2)
 
 	def display_computers_board(self,board):
-		for x in board:
-			print(x)
-		print("")
+		for row in board:
+			new_row = ''
+			for x in row:
+				new_row += "    " + x
+			print(new_row)
+			print("")
 
 
 	def place_ship(self,ship,active_player):
@@ -36,8 +48,15 @@ class Views:
 			direction = input("Direction: ")
 		return coordx, coordy, direction
 
-	def ask_coords(self):
+	def ask_coords(self,opposing_player,active_player):
+		os.system('clear')
+		print("{}'s View".format(active_player.name))
 		print("Where would you like to strike?")
+		print("")
+		print(opposing_player.name + "(this is where you are aiming")
+		self.display_computers_board(opposing_player.board.board)
+		print(active_player.name)
+		self.display_own_board(active_player.board.board)
 		coordy = None
 		coordx = None
 		while coordy not in range(0,10):
@@ -47,6 +66,7 @@ class Views:
 		return coordy, coordx
 
 	def hit_miss(self, hit_miss,ship_sunk,opposing_player,active_player):
+		
 		os.system('clear')
 		print("{}'s View".format(active_player.name))
 		print("")

@@ -46,7 +46,7 @@ class Controller:
 		if self.game_play.active_player.iscomputer == True:
 			coords = self.game_play.active_player.choose_coordinates()
 		else:
-			coords = self.v.ask_coords()
+			coords = self.v.ask_coords(self.game_play.opposing_player,self.game_play.active_player)
 		hit_miss, ship_sunk = self.game_play.guess(coords)
 		self.v.hit_miss(hit_miss, ship_sunk, self.game_play.opposing_player,self.game_play.active_player)
 		if self.game_play.opposing_player.ship_list == []:
