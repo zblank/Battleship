@@ -96,6 +96,10 @@ class Views:
 		return int(coordy), int(coordx)
 
 	def hit_miss(self, hit_miss,ship_sunk,opposing_player,active_player,coords):
+		'''Displays boards, and relevant hit miss messages. This is always a 'human view'
+		The computer's board will always be at the top (with obscured ships) 
+		and the player's board at the bottom'''
+
 		os.system('clear')
 		print("{}'s View".format(active_player.name))
 		print("")

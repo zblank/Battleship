@@ -71,6 +71,10 @@ class Computer:
 
 
 	def choose_coordinates(self,opposing_player):
+		'''takes the opposing player i.e the human, runs throuugh their board, and find's previous hits.
+		It then looks up that particular ship in the list of remaining ships. If it still there i.e. not sunk
+		it looks around the surrounding squares for a coordinate that hasn't already been chosen.
+		Otherwise it picks a coordinate at random '''
 		for row,columns in enumerate(opposing_player.board.board):
 			for column,value in enumerate(columns):
 				if opposing_player.board.board[row][column][0] in ["A","B","C","S","D"] and opposing_player.board.board[row][column][1] == "X":
@@ -99,10 +103,6 @@ class Computer:
 			return coordy, coordx
 		else:
 			return self.choose_coordinates(opposing_player)
-
-
-
-
 
 
 

@@ -31,6 +31,10 @@ class Controller:
 				valid = self.game_play.check_valid_coordinates(coordx,coordy,direction,ship)
 
 	def player_turn(self):
+		'''If the computer is a human it takes input values from the player, otherwise it uses the Computer's
+		choose_coordinates function. Calls on the relevant views functions to announce a hit or miss.
+		Then tests for whether the ship list is empty, and if so announces game over. Otherwise, switches switch_players
+		and repeats '''
 		if self.game_play.active_player.iscomputer == True:
 			coords = self.game_play.active_player.choose_coordinates(self.game_play.opposing_player)
 		else:
