@@ -1,7 +1,11 @@
 import os
+import time
+
+#time.sleep(0.2)
 
 # You guys will have to install the blessings library
 # if you don't already have it
+# Documentation here -> https://github.com/erikrose/blessings
 
 from blessings import Terminal
 
@@ -17,21 +21,41 @@ class Views:
 		for key, value in enumerate(board):
 			new_row = str(key) + "|"
 			for x in value:
-				new_row += "    " + x
-			print(new_row)
+				if x == "M":
+					new_row += "    {t.blue}" + x
+				elif x == "O":
+					new_row += "    {t.normal}" + x
+				elif x == "X":
+					new_row += "    {t.red}" + x
+				else:
+					new_row += "    {t.green}" + x
+			print(new_row.format(t=t))
 			print("")
-			xaxis2 += "    " + str(key)
-			xaxis1 += "    "  + "-"
-		print(xaxis1)
-		print(xaxis2)
+			xaxis2 += "    {t.normal}" + str(key)
+			xaxis1 += "    {t.normal}"  + "-"
+		print(xaxis1.format(t=t))
+		print(xaxis2.format(t=t))
 
 	def display_computers_board(self,board):
-		for row in board:
-			new_row = ''
-			for x in row:
-				new_row += "    " + x
-			print(new_row)
+		xaxis1 = "  "
+		xaxis2 = "  "
+		for key, value in enumerate(board):
+			new_row = str(key) + "|"
+			for x in value:
+				if x == "M":
+					new_row += "    {t.blue}" + x
+				elif x == "O":
+					new_row += "    {t.normal}" + x
+				elif x == "X":
+					new_row += "    {t.red}" + x
+				else:
+					new_row += "    {t.green}" + x
+			print(new_row.format(t=t))
 			print("")
+			xaxis2 += "    {t.normal}" + str(key)
+			xaxis1 += "    {t.normal}"  + "-"
+		print(xaxis1.format(t=t))
+		print(xaxis2.format(t=t))
 
 
 	def place_ship(self,ship,active_player):
@@ -66,7 +90,6 @@ class Views:
 		return coordy, coordx
 
 	def hit_miss(self, hit_miss,ship_sunk,opposing_player,active_player):
-		
 		os.system('clear')
 		print("{}'s View".format(active_player.name))
 		print("")
