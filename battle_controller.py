@@ -49,20 +49,15 @@ class Controller:
 			coords = self.v.ask_coords()
 		hit_miss, ship_sunk = self.game_play.guess(coords)
 		self.v.hit_miss(hit_miss, ship_sunk, self.game_play.opposing_player,self.game_play.active_player)
-		self.game_play.switch_players()
-		return self.player_turn()
-
-		
-		# views.hit_miss(hit_miss)
-		# if game_over:
-		# 	return self.game_over()
-		# else:
-		# 	self.active_player, self.opposing_player = self.opposing_player, self.active_player
-		# 	self.player_turn()
+		if self.game_play.opposing_player.ship_list == []:
+			return self.game_over()
+		else:
+			self.game_play.switch_players()
+			return self.player_turn()
 
 
 	def game_over(self):
-		pass
+		self.v.game_over(self.game_play.active_player.name)
 
 Controller()
 		

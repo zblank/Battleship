@@ -56,9 +56,13 @@ class Views:
 		self.display_own_board(active_player.board.board)
 		if hit_miss == True and ship_sunk != None:
 			print("You hit!")
-			print("You sunk my" + ship_sunk + "!!!")
+			print("You sunk my " + ship_sunk + "!!!")
 		elif hit_miss == True:
 			print("You hit")
 		else:
 			print ("You missed!")
-		enter = input("Press enter to continue ")
+		if active_player.iscomputer == False:
+			enter = input("Press enter to continue ")
+
+	def game_over(self,active_player_name):
+		print("Congratulations!! {0} won the game".format(active_player))

@@ -135,10 +135,10 @@ class Gameplay:
 			if ship.short == whats_there:
 				self.opposing_player.board.board[y][x] = "X"
 				ship.remaining_pieces -= 1
-				if ship.remaining_pieces != 0:
-					new_ship_list.append(ship)
-				else:
-					ship_sunk = ship.name
+			if ship.remaining_pieces != 0:
+				new_ship_list.append(ship)
+			else:
+				ship_sunk = ship.name
 		self.opposing_player.ship_list = new_ship_list
 		return ship_sunk
 
