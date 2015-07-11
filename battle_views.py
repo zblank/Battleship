@@ -21,14 +21,14 @@ class Views:
 		for key, value in enumerate(board):
 			new_row = "{t.normal}" + str(key) + "|"
 			for x in value:
-				if x == "M":
-					new_row += "    {t.bold_blue}" + x
-				elif x == "O":
-					new_row += "    {t.normal}" + x
-				elif x == "X":
-					new_row += "    {t.bold_red}" + x
+				if x[1] == "M":
+					new_row += "    {t.bold_blue}" + x[1]
+				elif x[1] == "O":
+					new_row += "    {t.normal}" + x[1]
+				elif x[1] == "X":
+					new_row += "    {t.bold_red}" + x[1]
 				else:
-					new_row += "    {t.bold_green}" + x
+					new_row += "    {t.bold_green}" + x[1]
 			print(new_row.format(t=t))
 			print("")
 			xaxis2 += "    {t.normal}" + str(key)
@@ -44,12 +44,12 @@ class Views:
 		for key, value in enumerate(board):
 			new_row = "{t.normal}" + str(key) + "|"
 			for x in value:
-				if x == "M":
-					new_row += "    {t.bold_blue}" + x
-				elif x == "O":
-					new_row += "    {t.normal}" + x
-				elif x == "X":
-					new_row += "    {t.bold_red}" + x
+				if x[1] == "M":
+					new_row += "    {t.bold_blue}" + x[1]
+				elif x[1] == "O":
+					new_row += "    {t.normal}" + x[1]
+				elif x[1] == "X":
+					new_row += "    {t.bold_red}" + x[1]
 				else:
 					new_row += "    {t.normal}" + "O"
 					#if you want to see computer's ships comment out the line above
@@ -90,13 +90,9 @@ class Views:
 		coordy = None
 		coordx = None
 		while coordy not in range(0,10):
-			coordy = input("What is the y coordinate ")
-			if type(coordy) != int:
-				return self.ask_coords(opposing_player,active_player)
+			coordy = int(input("What is the y coordinate "))
 		while coordx not in range(0,10):
-			coordx = input("What is the x coordinate ")
-			if type(coordx) != int:
-				return self.ask_coords(opposing_player,active_player)
+			coordx = int(input("What is the x coordinate "))
 		return int(coordy), int(coordx)
 
 	def hit_miss(self, hit_miss,ship_sunk,opposing_player,active_player,coords):

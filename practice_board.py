@@ -13,7 +13,9 @@ for num in range(10):
 	last_line.append("M")
 final_list.append(last_line)
 
-print ('{t.bold}All your {t.red}bold and red base{t.normal}'.format(t=t))
+for row, columns in enumerate(final_list):
+	for key, value in enumerate(columns):
+		print(row,key)
 
 
 def display_own_board(board):

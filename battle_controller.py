@@ -14,13 +14,6 @@ class Controller:
 		self.game_play.switch_players()
 		self.player_turn()
 
-	def get_active_player_board(self):
-		return self.game_play.active_player.board.board
-
-	def get_opposing_player_board(self):
-		return self.game_play.opposing_player.board.board
-
-
 	def place(self):
 		'''For every ship in the player's ship list, asks user
 		(player or computer) for coordinates and direction. If valid,
@@ -36,7 +29,6 @@ class Controller:
 				else:
 					coordx, coordy, direction = self.game_play.active_player.choose_starting_coordinates(ship)
 				valid = self.game_play.check_valid_coordinates(coordx,coordy,direction,ship)
-
 
 	def player_turn(self):
 		if self.game_play.active_player.iscomputer == True:
