@@ -30,11 +30,13 @@ class Views:
 			coordx = int(input("What is the x coordinate "))
 		return coordy, coordx
 
-	def hit_miss(self, hit_miss,opposing_board,active_board):
-		print("Opposition's board")
-		self.display_computers_board(opposing_board)
-		print("Player's board")
-		self.display_own_board(active_board)
+	def hit_miss(self, hit_miss,opposing_player,active_player):
+		print("{}'s View".format(active_player.name))
+		print("")
+		print(opposing_player.name)
+		self.display_computers_board(opposing_player.board.board)
+		print(active_player.name)
+		self.display_own_board(active_player.board.board)
 		if hit_miss == True:
 			print("You hit!")
 		else:

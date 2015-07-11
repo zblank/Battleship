@@ -107,6 +107,7 @@ class Gameplay:
 			return False
 		else:
 			self.hit(coords,whats_there)
+			print("A")
 			return True
 
 	def hit(self,coords,whats_there):
@@ -116,6 +117,7 @@ class Gameplay:
 		new_ship_list = []
 		for ship in self.opposing_player.ship_list:
 			if ship.short == whats_there:
+				print("B")
 				self.opposing_player.board.board[y][x] = "X"
 				ship.remaining_pieces -= 1
 				if ship.remaining_pieces != 0:

@@ -40,7 +40,7 @@ class Controller:
 		else:
 			coords = self.v.ask_coords()
 		hit_miss = self.game_play.guess(coords)
-		self.v.hit_miss(hit_miss,self.get_opposing_player_board(),self.get_active_player_board())
+		self.v.hit_miss(hit_miss,self.game_play.opposing_player,self.game_play.active_player)
 		self.game_play.switch_players()
 		return self.player_turn()
 
