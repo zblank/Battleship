@@ -16,12 +16,14 @@ class Views:
 
 
 	def place_ship(self,ship):
+		print ("Where would you like to place the {0}".format(ship.name))
 		coordy = int(input("What is the y starting coordinate? "))
 		coordx = int(input("What is the x starting coordinate? "))
 		direction = input("Direction: ")
 		return coordx, coordy, direction
 
 	def ask_coords(self):
+		print("Where would you like to strike?")
 		coordy = None
 		coordx = None
 		while coordy not in range(0,10):

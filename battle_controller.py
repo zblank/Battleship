@@ -30,7 +30,7 @@ class Controller:
 					coordx, coordy, direction = self.v.place_ship(ship)
 				else:
 					coordx, coordy, direction = self.game_play.active_player.choose_starting_coordinates(ship)
-				valid = self.game_play.place_ships(coordx,coordy,direction,ship)
+				valid = self.game_play.check_valid_coordinates(coordx,coordy,direction,ship)
 		self.v.display_own_board(self.get_active_player_board())
 
 

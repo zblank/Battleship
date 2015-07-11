@@ -24,8 +24,7 @@ class Player:
 		self.name = name
 		self.board = Board()
 		self.iscomputer = False
-		self.ship_list = [Ship("Battleship",4,"B1"),Ship("Destroyer",2,"D1")]
-
+		self.ship_list = [Ship("Aircraft Carrier",5,"A"), Ship("Battleship",4,"B"), Ship("Cruiser",2,"C"), Ship("Submarine",2,"S"), Ship("Destroyer",2,"D")]
 
 class Ship:
 	def __init__(self,name,length,short):
@@ -40,7 +39,7 @@ class Computer:
 		self.name = name
 		self.board = Board()
 		self.iscomputer = True
-		self.ship_list = [Ship("Battleship",4,"B1"),Ship("Destroyer",2,"D1")]
+		self.ship_list = [Ship("Aircraft Carrier",5,"A"), Ship("Battleship",4,"B"), Ship("Cruiser",2,"C"), Ship("Submarine",2,"S"), Ship("Destroyer",2,"D")]
 
 	def choose_starting_coordinates(self,ship):
 		coordx = random.randint(0,9)
@@ -63,6 +62,8 @@ class Gameplay:
 		self.active_player, self.opposing_player = self.opposing_player,self.active_player
 
 	def get_proposed_coordinates(self,coordx,coordy,direction,ship):
+		''' Takes a starting coordinate, direction, and a ship
+			and returns a list of implied coordinates [y,x]'''
 		coord_list = [(coordy,coordx)]
 		for x in range(ship-1):
 			if direction == 'd':
@@ -79,16 +80,26 @@ class Gameplay:
 				coord_list.append([coordy,coordx])
 		return coord_list
 
-	def place_ships(self,coordx,coordy,direction,ship):
+	def check_valid_coordinates(self,coordx,coordy,direction,ship):
+		''' gets coordinates based on get_proposed_coordinates and checks 
+			if they are valid. If True, proceed to place_ships and returns True
+			else, returns False '''
 		get_coords = self.get_proposed_coordinates(coordx,coordy,direction,ship.length)
 		for coord in get_coords:
 			y,x = coord
 			if y >= 10 or y < 0 or x < 0 or x >= 10:
 				return False
-			if self.active_player.board.board[y][x] == "O":
-				self.active_player.board.board[y][x] = ship.short
-			else:
+			elif self.active_player.board.board[y][x] != "O":
 				return False
+		self.place_ship(get_coords,ship)
+		return True
+
+
+	def place_ship(self, get_coords,ship):
+		''' places ships short symbol on coordinates '''
+		for coord in get_coords:
+			y,x = coord
+			self.active_player.board.board[y][x] = ship.short
 		return True
 
 	def guess(self,coords):
