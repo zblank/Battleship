@@ -77,7 +77,7 @@ class Views:
 		print("{}'s View".format(active_player.name))
 		print("Where would you like to strike?")
 		print("")
-		print(opposing_player.name + "(this is where you are aiming")
+		print(opposing_player.name + "(this is where you are aiming ")
 		self.display_computers_board(opposing_player.board.board)
 		print(active_player.name)
 		self.display_own_board(active_player.board.board)
@@ -89,23 +89,36 @@ class Views:
 			coordx = int(input("What is the x coordinate "))
 		return coordy, coordx
 
-	def hit_miss(self, hit_miss,ship_sunk,opposing_player,active_player):
+	def hit_miss(self, hit_miss,ship_sunk,opposing_player,active_player,coords):
 		os.system('clear')
 		print("{}'s View".format(active_player.name))
 		print("")
-		print(opposing_player.name)
-		self.display_computers_board(opposing_player.board.board)
-		print(active_player.name)
-		self.display_own_board(active_player.board.board)
-		if hit_miss == True and ship_sunk != None:
-			print("You hit!")
-			print("You sunk my " + ship_sunk + "!!!")
-		elif hit_miss == True:
-			print("You hit")
-		else:
-			print ("You missed!")
 		if active_player.iscomputer == False:
-			enter = input("Press enter to continue ")
+			print(opposing_player.name)
+			self.display_computers_board(opposing_player.board.board)
+			print(active_player.name)
+			self.display_own_board(active_player.board.board)
+			if hit_miss == True and ship_sunk != None:
+				print("You hit!")
+				print("You sunk my " + ship_sunk + "!!!")
+			elif hit_miss == True:
+				print("You hit")
+			else:
+				print ("You missed!")
+		else:
+			print(active_player.name)
+			self.display_own_board(active_player.board.board)
+			print(opposing_player.name)
+			self.display_computers_board(opposing_player.board.board)
+			if hit_miss == True and ship_sunk != None:
+				print("Computer hit at {0}".format(coords))
+				print("You sunk my " + ship_sunk + "!!!")
+			elif hit_miss == True:
+				print("Computer hit at {0}".format(coords))
+			else:
+				print ("Computer missed at{0}".format(coords))
+		enter = input("Press enter to continue ")
+
 
 	def game_over(self,active_player_name):
 		print("Congratulations!! {0} won the game".format(active_player))

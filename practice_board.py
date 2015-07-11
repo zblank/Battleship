@@ -43,8 +43,6 @@ def display_users_board(board):
 				new_row += "    {t.red}" + x
 			else:
 				new_row += "    {t.green}" + x
-
-				
 		print(new_row.format(t=t))
 		print("")
 		xaxis2 += "    {t.normal}" + str(key)
@@ -53,5 +51,17 @@ def display_users_board(board):
 	print(xaxis2.format(t=t))
 
 
-display_users_board(final_list)
+# display_users_board(final_list)
 #display_own_board(final_list)
+
+class Random:
+	def __init__(self):
+		pass
+
+	def set(self):
+		self.check = "Y"
+
+
+test = Random()
+test.set()
+print(test.check)
