@@ -22,15 +22,23 @@ class Controller:
 
 
 	def place(self):
+		'''For every ship in the player's ship list, asks user
+		(player or computer) for coordinates and direction. If valid,
+		it places the ship there, otherwise asks them again'''
 		ship_list = self.game_play.active_player.ship_list
 		for ship in ship_list:
 			valid = False
 			while valid == False: 
 				if self.game_play.active_player.iscomputer == False:
-					coordx, coordy, direction = self.v.place_ship(ship)
+					#Passes the views both the ship and the player, so that they can view their
+					#board before placing
+					coordx, coordy, direction = self.v.place_ship(ship,self.game_play.active_player)
 				else:
 					coordx, coordy, direction = self.game_play.active_player.choose_starting_coordinates(ship)
 				valid = self.game_play.check_valid_coordinates(coordx,coordy,direction,ship)
+		#The lines below are only for debugging purposes, so we can see both the users
+		#and computers boards after all ships have been placed
+		print("This is for display purposes")
 		self.v.display_own_board(self.get_active_player_board())
 
 
@@ -39,8 +47,8 @@ class Controller:
 			coords = self.game_play.active_player.choose_coordinates()
 		else:
 			coords = self.v.ask_coords()
-		hit_miss = self.game_play.guess(coords)
-		self.v.hit_miss(hit_miss,self.game_play.opposing_player,self.game_play.active_player)
+		hit_miss, ship_sunk = self.game_play.guess(coords)
+		self.v.hit_miss(hit_miss, ship_sunk, self.game_play.opposing_player,self.game_play.active_player)
 		self.game_play.switch_players()
 		return self.player_turn()
 
