@@ -24,7 +24,7 @@ class Player:
 		self.name = name
 		self.board = Board()
 		self.iscomputer = False
-
+		self.ship_list = [Ship("Aircraft Carrier",5,"A"), Ship("Battleship",4,"B"), Ship("Cruiser",2,"C"), Ship("Submarine",2,"S"), Ship("Destroyer",2,"D")]
 
 class Ship:
 	def __init__(self,name,length,short):
@@ -39,17 +39,22 @@ class Computer:
 		self.name = name
 		self.board = Board()
 		self.iscomputer = True
+		self.ship_list = [Ship("Aircraft Carrier",5,"A"), Ship("Battleship",4,"B"), Ship("Cruiser",2,"C"), Ship("Submarine",2,"S"), Ship("Destroyer",2,"D")]
 
-	def choose_coordinates(self,ship):
+	def choose_starting_coordinates(self,ship):
 		coordx = random.randint(0,9)
 		coordy = random.randint(0,9)
 		direction = random.choice(['u','d','l','r'])
 		return coordx,coordy, direction
 
+	def choose_coordinates(self):
+		coordy = random.randint(0,9)
+		coordx = random.randint(0,9)
+		return coordy, coordx
+
 
 class Gameplay:
 	def __init__(self):
-		self.ship_list = [Ship("Battleship",4,"B1"),Ship("Destroyer",2,"D1")]
 		self.active_player = Player("Player 1")
 		self.opposing_player = Computer("Computer")
 
@@ -57,6 +62,8 @@ class Gameplay:
 		self.active_player, self.opposing_player = self.opposing_player,self.active_player
 
 	def get_proposed_coordinates(self,coordx,coordy,direction,ship):
+		''' Takes a starting coordinate, direction, and a ship
+			and returns a list of implied coordinates [y,x]'''
 		coord_list = [(coordy,coordx)]
 		for x in range(ship-1):
 			if direction == 'd':
@@ -73,49 +80,70 @@ class Gameplay:
 				coord_list.append([coordy,coordx])
 		return coord_list
 
-	def place_ships(self,coordx,coordy,direction,ship):
+	def check_valid_coordinates(self,coordx,coordy,direction,ship):
+		''' gets coordinates based on get_proposed_coordinates and checks 
+			if they are valid. If True, proceed to place_ships and returns True
+			else, returns False '''
 		get_coords = self.get_proposed_coordinates(coordx,coordy,direction,ship.length)
-		print(get_coords)
 		for coord in get_coords:
 			y,x = coord
 			if y >= 10 or y < 0 or x < 0 or x >= 10:
 				return False
-			if self.active_player.board.board[y][x] == "O":
-				self.active_player.board.board[y][x] = ship.short
-			else:
+			elif self.active_player.board.board[y][x] != "O":
 				return False
-		print(self.active_player.board.board)
+		self.place_ship(get_coords,ship)
 		return True
-	
-				
 
 
-
+	def place_ship(self, get_coords,ship):
+		''' places ships short symbol on coordinates '''
+		for coord in get_coords:
+			y,x = coord
+			self.active_player.board.board[y][x] = ship.short
+		return True
 
 	def guess(self,coords):
-		#search array
-		# if not X,M,O:
-		# 	self.hit(coords)
-		# 	return True
-		# else:
-		# 	self.miss(coords)
-		# 	return False
-		pass
+		y,x = coords
+		whats_there = self.opposing_player.board.board[y][x]
+		if whats_there == "M":
+			#Could implement a different message, but
+			#for now just tell user they have missed
+			return False
+		elif whats_there == "X":
+			#Could implement a different message, but
+			#for now just tell user they have missed
+			return False
+		elif whats_there == "O":
+			self.miss(coords)
+			return False
+		else:
+			self.hit(coords,whats_there)
+			print("A")
+			return True
+
+	def hit(self,coords,whats_there):
+		ship_short = whats_there
+		#Looks through the player's ship list,and amends
+		y,x = coords
+		new_ship_list = []
+		for ship in self.opposing_player.ship_list:
+			if ship.short == whats_there:
+				print("B")
+				self.opposing_player.board.board[y][x] = "X"
+				ship.remaining_pieces -= 1
+				if ship.remaining_pieces != 0:
+					new_ship_list.append(ship)
+				else:
+					pass
+					#pass some message to indicate ship sunk
+		self.opposing_player.ship_list = new_ship_list
 
 
-
-	def hit(self,coords):
-		#find ship short e.g."D1"
-		#change that spot to an x
-		#reduce ship (e.g. D1) spots by 1
-		#check if ship remaining spots = 0
-		#check if ship_list length = 0
-		pass
 
 
 	def miss(self,coords):
-		#change that spot to an M
-		pass
+		y,x = coords
+		self.opposing_player.board.board[y][x] = "M"
 
 
 
