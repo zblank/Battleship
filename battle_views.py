@@ -19,7 +19,7 @@ class Views:
 		xaxis1 = "  "
 		xaxis2 = "  "
 		for key, value in enumerate(board):
-			new_row = str(key) + "|"
+			new_row = "{t.normal}" + str(key) + "|"
 			for x in value:
 				if x == "M":
 					new_row += "    {t.blue}" + x
@@ -37,10 +37,12 @@ class Views:
 		print(xaxis2.format(t=t))
 
 	def display_computers_board(self,board):
+		'''This will display like display_own_board except
+		with the ships masked'''
 		xaxis1 = "  "
 		xaxis2 = "  "
 		for key, value in enumerate(board):
-			new_row = str(key) + "|"
+			new_row = "{t.normal}" + str(key) + "|"
 			for x in value:
 				if x == "M":
 					new_row += "    {t.blue}" + x
@@ -49,7 +51,10 @@ class Views:
 				elif x == "X":
 					new_row += "    {t.red}" + x
 				else:
-					new_row += "    {t.green}" + x
+					new_row += "    {t.normal}" + "O"
+					#if you want to see computer's ships comment out the line above
+					# and initiate the line below
+					# new_row += "    {t.green}" + x
 			print(new_row.format(t=t))
 			print("")
 			xaxis2 += "    {t.normal}" + str(key)
@@ -77,8 +82,9 @@ class Views:
 		print("{}'s View".format(active_player.name))
 		print("Where would you like to strike?")
 		print("")
-		print(opposing_player.name + "(this is where you are aiming ")
+		print(opposing_player.name + "(this is where you are aiming)")
 		self.display_computers_board(opposing_player.board.board)
+	
 		print(active_player.name)
 		self.display_own_board(active_player.board.board)
 		coordy = None
@@ -107,9 +113,9 @@ class Views:
 				print ("You missed!")
 		else:
 			print(active_player.name)
-			self.display_own_board(active_player.board.board)
+			self.display_computers_board(active_player.board.board)
 			print(opposing_player.name)
-			self.display_computers_board(opposing_player.board.board)
+			self.display_own_board(opposing_player.board.board)
 			if hit_miss == True and ship_sunk != None:
 				print("Computer hit at {0}".format(coords))
 				print("You sunk my " + ship_sunk + "!!!")
