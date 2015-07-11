@@ -22,13 +22,13 @@ class Views:
 			new_row = "{t.normal}" + str(key) + "|"
 			for x in value:
 				if x == "M":
-					new_row += "    {t.blue}" + x
+					new_row += "    {t.bold_blue}" + x
 				elif x == "O":
 					new_row += "    {t.normal}" + x
 				elif x == "X":
-					new_row += "    {t.red}" + x
+					new_row += "    {t.bold_red}" + x
 				else:
-					new_row += "    {t.green}" + x
+					new_row += "    {t.bold_green}" + x
 			print(new_row.format(t=t))
 			print("")
 			xaxis2 += "    {t.normal}" + str(key)
@@ -45,11 +45,11 @@ class Views:
 			new_row = "{t.normal}" + str(key) + "|"
 			for x in value:
 				if x == "M":
-					new_row += "    {t.blue}" + x
+					new_row += "    {t.bold_blue}" + x
 				elif x == "O":
 					new_row += "    {t.normal}" + x
 				elif x == "X":
-					new_row += "    {t.red}" + x
+					new_row += "    {t.bold_red}" + x
 				else:
 					new_row += "    {t.normal}" + "O"
 					#if you want to see computer's ships comment out the line above
@@ -90,10 +90,14 @@ class Views:
 		coordy = None
 		coordx = None
 		while coordy not in range(0,10):
-			coordy = int(input("What is the y coordinate "))
+			coordy = input("What is the y coordinate ")
+			if type(coordy) != int:
+				return self.ask_coords(opposing_player,active_player)
 		while coordx not in range(0,10):
-			coordx = int(input("What is the x coordinate "))
-		return coordy, coordx
+			coordx = input("What is the x coordinate ")
+			if type(coordx) != int:
+				return self.ask_coords(opposing_player,active_player)
+		return int(coordy), int(coordx)
 
 	def hit_miss(self, hit_miss,ship_sunk,opposing_player,active_player,coords):
 		os.system('clear')

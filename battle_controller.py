@@ -40,7 +40,7 @@ class Controller:
 
 	def player_turn(self):
 		if self.game_play.active_player.iscomputer == True:
-			coords = self.game_play.active_player.choose_coordinates()
+			coords = self.game_play.active_player.choose_coordinates(self.game_play.opposing_player)
 		else:
 			coords = self.v.ask_coords(self.game_play.opposing_player,self.game_play.active_player)
 		hit_miss, ship_sunk = self.game_play.guess(coords)

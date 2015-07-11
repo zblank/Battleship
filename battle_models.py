@@ -41,8 +41,6 @@ class Ship:
 		self.remaining_pieces = length
 
 
-
-
 class Computer:
 	def __init__(self, name):
 		self.name = name
@@ -57,17 +55,22 @@ class Computer:
 		direction = random.choice(['u','d','l','r'])
 		return coordx,coordy, direction
 
-	# def choose_coordinates(self):
-	# 	coordy = random.randint(0,9)
-	# 	coordx = random.randint(0,9)
-	# 	return coordy, coordx
-
 	def store_last_guess(self,coordinate=(0,0),whats_there="O",sunk=None):
 		self.last_coordinate_chosen = coordinate
 		self.last_coordinate_type = whats_there
 		self.was_ship_sunk = sunk
 
-	def choose_coordinates(self):
+	def check_coordinate(self,opposing_board):
+		y,x = coord
+		if y >= 10 or y < 0 or x < 0 or x >= 10:
+			return False
+		elif opposing_board[y][x] != "O":
+			return False
+		else:
+			return True
+
+
+	def choose_coordinates(self,opposing_player):
 		print(self.last_coordinate_chosen,self.last_coordinate_type,self.was_ship_sunk)
 		coordy,coordx = self.last_coordinate_chosen
 		if self.last_coordinate_type in ["A","B","C","S","D"] and self.was_ship_sunk == None:
