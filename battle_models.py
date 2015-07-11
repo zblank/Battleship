@@ -24,7 +24,7 @@ class Player:
 		self.name = name
 		self.board = Board()
 		self.iscomputer = False
-		self.ship_list = [Ship("Aircraft Carrier",5,"A"), Ship("Battleship",4,"B"), Ship("Cruiser",2,"C"), Ship("Submarine",2,"S"), Ship("Destroyer",2,"D")]
+		self.ship_list = [Ship("Aircraft Carrier",5,"A"), Ship("Battleship",4,"B"), Ship("Cruiser",3,"C"), Ship("Submarine",3,"S"), Ship("Destroyer",2,"D")]
 
 class Ship:
 	def __init__(self,name,length,short):
@@ -39,7 +39,7 @@ class Computer:
 		self.name = name
 		self.board = Board()
 		self.iscomputer = True
-		self.ship_list = [Ship("Aircraft Carrier",5,"A"), Ship("Battleship",4,"B"), Ship("Cruiser",2,"C"), Ship("Submarine",2,"S"), Ship("Destroyer",2,"D")]
+		self.ship_list = [Ship("Aircraft Carrier",5,"A"), Ship("Battleship",4,"B"), Ship("Cruiser",3,"C"), Ship("Submarine",3,"S"), Ship("Destroyer",2,"D")]
 
 	def choose_starting_coordinates(self,ship):
 		coordx = random.randint(0,9)
@@ -108,35 +108,39 @@ class Gameplay:
 		if whats_there == "M":
 			#Could implement a different message, but
 			#for now just tell user they have missed
-			return False
+			return False, None
 		elif whats_there == "X":
 			#Could implement a different message, but
 			#for now just tell user they have missed
-			return False
+			return False, None
 		elif whats_there == "O":
 			self.miss(coords)
-			return False
+			return False, None
 		else:
-			self.hit(coords,whats_there)
-			print("A")
-			return True
+			ship_sunk = self.hit(coords,whats_there)
+			return True, ship_sunk
 
 	def hit(self,coords,whats_there):
+		''' Once a hit has been determined, changes
+		that coordinate to an "X", and removes one piece 
+		from the ship object. If the ship's length is zero it is
+		not added to the updated ship list i.e. removed and a message
+		is passed to the guess function that the ship has been sunk '''
 		ship_short = whats_there
 		#Looks through the player's ship list,and amends
 		y,x = coords
 		new_ship_list = []
+		ship_sunk = None
 		for ship in self.opposing_player.ship_list:
 			if ship.short == whats_there:
-				print("B")
 				self.opposing_player.board.board[y][x] = "X"
 				ship.remaining_pieces -= 1
-				if ship.remaining_pieces != 0:
-					new_ship_list.append(ship)
-				else:
-					pass
-					#pass some message to indicate ship sunk
+			if ship.remaining_pieces != 0:
+				new_ship_list.append(ship)
+			else:
+				ship_sunk = ship.name
 		self.opposing_player.ship_list = new_ship_list
+		return ship_sunk
 
 
 
