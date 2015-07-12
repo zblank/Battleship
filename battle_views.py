@@ -102,20 +102,20 @@ class Views:
 				print ("You missed!")
 				os.system('afplay woosh.mp3')
 		else:
-			#Fix coords
+			ycoord, xcoord = coords
 			print(active_player.name+"\n")
 			self.display_computers_board(active_player.board.board)
 			print(opposing_player.name+"\n")
 			self.display_own_board(opposing_player.board.board)
 			if hit_miss == True and ship_sunk != None:
-				print("Computer hit at {0}".format(coords))
+				print("Computer hit at {0},{1}".format(xcoord,ycoord))
 				print("You sunk my " + ship_sunk + "!!!")
 				os.system('afplay bomb.mp3')
 			elif hit_miss == True:
-				print("Computer hit at {0}".format(coords))
+				print("Computer hit at {0},{1}".format(xcoord,ycoord))
 				os.system('afplay shotgun.mp3')
 			else:
-				print ("Computer missed at{0}".format(coords))
+				print ("Computer missed at {0},{1}".format(xcoord,ycoord))
 				os.system('afplay woosh.mp3')
 		enter = input("Press enter to continue ")
 
