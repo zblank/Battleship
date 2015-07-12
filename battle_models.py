@@ -13,7 +13,7 @@ class Board:
 		for num in range(self.size):
 			l = []
 			for num in range(self.size):
-				l.append('O')
+				l.append(['O','O'])
 			final_list.append(l)
 		return final_list
 
@@ -41,8 +41,6 @@ class Ship:
 		self.remaining_pieces = length
 
 
-
-
 class Computer:
 	def __init__(self, name):
 		self.name = name
@@ -57,34 +55,54 @@ class Computer:
 		direction = random.choice(['u','d','l','r'])
 		return coordx,coordy, direction
 
-	# def choose_coordinates(self):
-	# 	coordy = random.randint(0,9)
-	# 	coordx = random.randint(0,9)
-	# 	return coordy, coordx
-
 	def store_last_guess(self,coordinate=(0,0),whats_there="O",sunk=None):
 		self.last_coordinate_chosen = coordinate
 		self.last_coordinate_type = whats_there
 		self.was_ship_sunk = sunk
 
-	def choose_coordinates(self):
-		print(self.last_coordinate_chosen,self.last_coordinate_type,self.was_ship_sunk)
-		coordy,coordx = self.last_coordinate_chosen
-		if self.last_coordinate_type in ["A","B","C","S","D"] and self.was_ship_sunk == None:
-			x_or_y = random.choice(["x","y"])
-			direction  = random.choice([-1,1])
-			if x_or_y == "y":
-				coordy += direction
-			elif x_or_y == "x":
-				coordx += direction
-			if coordx < 0 or coordx > 9 or coordy < 0 or coordy > 9:
-				return self.choose_coordinates()
+	def check_coordinate(self,opposing_board,coord):
+		y,x = coord
+		if y >= 10 or y < 0 or x < 0 or x >= 10:
+			return False
+		elif opposing_board[y][x][1] in ["M","X"]:
+			return False
+		else:
+			return True
+
+
+	def choose_coordinates(self,opposing_player,count=1):
+		'''takes the opposing player i.e the human, runs throuugh their board, and find's previous hits.
+		It then looks up that particular ship in the list of remaining ships. If it still there i.e. not sunk
+		it looks around the surrounding squares for a coordinate that hasn't already been chosen.
+		Otherwise it picks a coordinate at random '''
+		for row,columns in enumerate(opposing_player.board.board):
+			for column,value in enumerate(columns):
+				if opposing_player.board.board[row][column][0] in ["A","B","C","S","D"] and opposing_player.board.board[row][column][1] == "X":
+					ship_type = opposing_player.board.board[row][column][0]
+					for ship in opposing_player.ship_list:
+						print(ship.short)
+						print(ship_type)
+						if ship_type == ship.short:
+							x_or_y = random.choice(["x","y"])
+							d = [x for x in range(1,count+1)] + [-x for x in range(1,count+1)]
+							direction  = random.choice(d)
+							if x_or_y == "y":
+								row += direction
+							elif x_or_y == "x":
+								column += direction
+							coordy = row
+							coordx = column
+							if self.check_coordinate(opposing_player.board.board,(coordy,coordx)) == True:
+								return coordy, coordx
+							else:
+								count += 1
+								return self.choose_coordinates(opposing_player,count)
+		coordy = random.randint(0,9)
+		coordx = random.randint(0,9)
+		if self.check_coordinate(opposing_player.board.board,(coordy,coordx)) == True:
 			return coordy, coordx
 		else:
-			coordy = random.randint(0,9)
-			coordx = random.randint(0,9)
-			return coordy, coordx
-
+			return self.choose_coordinates(opposing_player)
 
 
 
@@ -124,7 +142,7 @@ class Gameplay:
 			y,x = coord
 			if y >= 10 or y < 0 or x < 0 or x >= 10:
 				return False
-			elif self.active_player.board.board[y][x] != "O":
+			elif self.active_player.board.board[y][x][1] != "O":
 				return False
 		self.place_ship(get_coords,ship)
 		return True
@@ -134,12 +152,12 @@ class Gameplay:
 		''' places ships short symbol on coordinates '''
 		for coord in get_coords:
 			y,x = coord
-			self.active_player.board.board[y][x] = ship.short
+			self.active_player.board.board[y][x][0], self.active_player.board.board[y][x][1] = ship.short, ship.short
 		return True
 
 	def guess(self,coords):
 		y,x = coords
-		whats_there = self.opposing_player.board.board[y][x]
+		whats_there = self.opposing_player.board.board[y][x][1]
 		if whats_there == "M":
 			#Could implement a different message, but
 			#for now just tell user they have missed
@@ -173,7 +191,7 @@ class Gameplay:
 		ship_sunk = None
 		for ship in self.opposing_player.ship_list:
 			if ship.short == whats_there:
-				self.opposing_player.board.board[y][x] = "X"
+				self.opposing_player.board.board[y][x][1] = "X"
 				ship.remaining_pieces -= 1
 			if ship.remaining_pieces != 0:
 				new_ship_list.append(ship)
@@ -187,7 +205,7 @@ class Gameplay:
 
 	def miss(self,coords):
 		y,x = coords
-		self.opposing_player.board.board[y][x] = "M"
+		self.opposing_player.board.board[y][x][1] = "M"
 
 
 

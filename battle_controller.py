@@ -14,13 +14,6 @@ class Controller:
 		self.game_play.switch_players()
 		self.player_turn()
 
-	def get_active_player_board(self):
-		return self.game_play.active_player.board.board
-
-	def get_opposing_player_board(self):
-		return self.game_play.opposing_player.board.board
-
-
 	def place(self):
 		'''For every ship in the player's ship list, asks user
 		(player or computer) for coordinates and direction. If valid,
@@ -37,10 +30,13 @@ class Controller:
 					coordx, coordy, direction = self.game_play.active_player.choose_starting_coordinates(ship)
 				valid = self.game_play.check_valid_coordinates(coordx,coordy,direction,ship)
 
-
 	def player_turn(self):
+		'''If the computer is a human it takes input values from the player, otherwise it uses the Computer's
+		choose_coordinates function. Calls on the relevant views functions to announce a hit or miss.
+		Then tests for whether the ship list is empty, and if so announces game over. Otherwise, switches switch_players
+		and repeats '''
 		if self.game_play.active_player.iscomputer == True:
-			coords = self.game_play.active_player.choose_coordinates()
+			coords = self.game_play.active_player.choose_coordinates(self.game_play.opposing_player)
 		else:
 			coords = self.v.ask_coords(self.game_play.opposing_player,self.game_play.active_player)
 		hit_miss, ship_sunk = self.game_play.guess(coords)
