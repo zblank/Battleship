@@ -1,8 +1,4 @@
 import os
-import time
-
-#time.sleep(0.2)
-
 # You guys will have to install the blessings library
 # if you don't already have it
 # Documentation here -> https://github.com/erikrose/blessings
@@ -65,7 +61,7 @@ class Views:
 
 	def place_ship(self,ship,active_player):
 		os.system('clear')
-		print(t.bold("WELCOME PLAYER - PLACE YOUR SHIPS!!"))
+		print(t.bold("WELCOME PLAYER - PLACE YOUR SHIPS!!\n"))
 		#os.system('afplay gun.mp3')
 		self.display_own_board(active_player.board.board)
 		print ("Where would you like to place the {0}".format(ship.name))
@@ -80,14 +76,13 @@ class Views:
 
 	def ask_coords(self,opposing_player,active_player):
 		os.system('clear')
-		print("Where would you like to strike?")
-		print("")
-		print(opposing_player.name + "(this is where you are aiming)")
+		print(opposing_player.name+"\n")
 		self.display_computers_board(opposing_player.board.board)
-		print(active_player.name)
+		print(active_player.name+"\n")
 		self.display_own_board(active_player.board.board)
 		coordy = None
 		coordx = None
+		print("Where would you like to strike?")
 		while coordy not in [str(x) for x in range(0,10)]:
 			coordy = input("What is the y coordinate ")
 		while coordx not in [str(x) for x in range(0,10)]:
@@ -98,14 +93,12 @@ class Views:
 		'''Displays boards, and relevant hit miss messages. This is always a 'human view'
 		The computer's board will always be at the top (with obscured ships) 
 		and the player's board at the bottom'''
-
 		os.system('clear')
-		print("{}'s View".format(active_player.name))
 		print("")
 		if active_player.iscomputer == False:
-			print(opposing_player.name)
+			print(opposing_player.name+"\n")
 			self.display_computers_board(opposing_player.board.board)
-			print(active_player.name)
+			print(active_player.name+"\n")
 			self.display_own_board(active_player.board.board)
 			if hit_miss == True and ship_sunk != None:
 				print("You hit!")

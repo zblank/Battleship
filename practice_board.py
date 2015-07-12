@@ -13,10 +13,8 @@ for num in range(10):
 	last_line.append("M")
 final_list.append(last_line)
 
-for row, columns in enumerate(final_list):
-	for key, value in enumerate(columns):
-		print(row,key)
-
+print(t.move(-30,1)+"hey")
+print("Hello")
 
 def display_own_board(board):
 	for x in board:
@@ -56,14 +54,3 @@ def display_users_board(board):
 # display_users_board(final_list)
 #display_own_board(final_list)
 
-class Random:
-	def __init__(self):
-		pass
-
-	def set(self):
-		self.check = "Y"
-
-
-test = Random()
-test.set()
-print(test.check)
