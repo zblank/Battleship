@@ -70,7 +70,7 @@ class Computer:
 			return True
 
 
-	def choose_coordinates(self,opposing_player):
+	def choose_coordinates(self,opposing_player,count=1):
 		'''takes the opposing player i.e the human, runs throuugh their board, and find's previous hits.
 		It then looks up that particular ship in the list of remaining ships. If it still there i.e. not sunk
 		it looks around the surrounding squares for a coordinate that hasn't already been chosen.
@@ -78,15 +78,14 @@ class Computer:
 		for row,columns in enumerate(opposing_player.board.board):
 			for column,value in enumerate(columns):
 				if opposing_player.board.board[row][column][0] in ["A","B","C","S","D"] and opposing_player.board.board[row][column][1] == "X":
-					print("Got A")
 					ship_type = opposing_player.board.board[row][column][0]
 					for ship in opposing_player.ship_list:
 						print(ship.short)
 						print(ship_type)
 						if ship_type == ship.short:
-							print("Got B")
 							x_or_y = random.choice(["x","y"])
-							direction  = random.choice([-1,1])
+							d = [x for x in range(1,count+1)] + [-x for x in range(1,count+1)]
+							direction  = random.choice(d)
 							if x_or_y == "y":
 								row += direction
 							elif x_or_y == "x":
@@ -96,7 +95,8 @@ class Computer:
 							if self.check_coordinate(opposing_player.board.board,(coordy,coordx)) == True:
 								return coordy, coordx
 							else:
-								return self.choose_coordinates(opposing_player)
+								count += 1
+								return self.choose_coordinates(opposing_player,count)
 		coordy = random.randint(0,9)
 		coordx = random.randint(0,9)
 		if self.check_coordinate(opposing_player.board.board,(coordy,coordx)) == True:

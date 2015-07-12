@@ -65,34 +65,33 @@ class Views:
 
 	def place_ship(self,ship,active_player):
 		os.system('clear')
-		print(t.bold("PLACE YOUR SHIPS!!"))
+		print(t.bold("WELCOME PLAYER - PLACE YOUR SHIPS!!"))
+		#os.system('afplay gun.mp3')
 		self.display_own_board(active_player.board.board)
 		print ("Where would you like to place the {0}".format(ship.name))
 		coordy,coordx,direction = None, None, None
-		while coordy not in range(0,10):
-			coordy = int(input("What is the y starting coordinate? "))
-		while coordx not in range(0,10):
-			coordx = int(input("What is the x starting coordinate? "))
+		while coordy not in [str(x) for x in range(0,10)]:
+			coordy = input("What is the y starting coordinate? ")
+		while coordx not in [str(x) for x in range(0,10)]:
+			coordx = input("What is the x starting coordinate? ")
 		while direction not in ["l","r","d","u"]:
 			direction = input("Direction: ")
-		return coordx, coordy, direction
+		return int(coordx),int(coordy), direction
 
 	def ask_coords(self,opposing_player,active_player):
 		os.system('clear')
-		print("{}'s View".format(active_player.name))
 		print("Where would you like to strike?")
 		print("")
 		print(opposing_player.name + "(this is where you are aiming)")
 		self.display_computers_board(opposing_player.board.board)
-	
 		print(active_player.name)
 		self.display_own_board(active_player.board.board)
 		coordy = None
 		coordx = None
-		while coordy not in range(0,10):
-			coordy = int(input("What is the y coordinate "))
-		while coordx not in range(0,10):
-			coordx = int(input("What is the x coordinate "))
+		while coordy not in [str(x) for x in range(0,10)]:
+			coordy = input("What is the y coordinate ")
+		while coordx not in [str(x) for x in range(0,10)]:
+			coordx = input("What is the x coordinate ")
 		return int(coordy), int(coordx)
 
 	def hit_miss(self, hit_miss,ship_sunk,opposing_player,active_player,coords):
@@ -111,10 +110,13 @@ class Views:
 			if hit_miss == True and ship_sunk != None:
 				print("You hit!")
 				print("You sunk my " + ship_sunk + "!!!")
+				os.system('afplay bomb.mp3')
 			elif hit_miss == True:
 				print("You hit")
+				os.system('afplay shotgun.mp3')
 			else:
 				print ("You missed!")
+				os.system('afplay woosh.mp3')
 		else:
 			print(active_player.name)
 			self.display_computers_board(active_player.board.board)
@@ -123,12 +125,16 @@ class Views:
 			if hit_miss == True and ship_sunk != None:
 				print("Computer hit at {0}".format(coords))
 				print("You sunk my " + ship_sunk + "!!!")
+				os.system('afplay bomb.mp3')
 			elif hit_miss == True:
 				print("Computer hit at {0}".format(coords))
+				os.system('afplay shotgun.mp3')
 			else:
 				print ("Computer missed at{0}".format(coords))
+				os.system('afplay woosh.mp3')
 		enter = input("Press enter to continue ")
 
 
 	def game_over(self,active_player_name):
-		print("Congratulations!! {0} won the game".format(active_player))
+		print("Congratulations!! {0} won the game".format(active_player_name))
+		os.system('afplay win.mp3')
