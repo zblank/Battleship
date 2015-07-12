@@ -12,50 +12,44 @@ class Views:
 		pass
 
 	def display_own_board(self,board):
-		xaxis = " "
+		xaxis = "   "
 		for key, value in enumerate(board):
 			new_row = "{t.normal}  " + str(key)
 			for x in value:
 				if x[1] == "M":
-					new_row += "  |  {t.bold_blue}" + x[1]
+					new_row += "{t.normal}  |  {t.bold_blue}" + x[1]
 				elif x[1] == "O":
-					new_row += "  |  {t.normal}" + x[1]
+					new_row += "{t.normal}  |  {t.normal}" + " "
 				elif x[1] == "X":
-					new_row += "  |  {t.bold_red}" + x[1]
+					new_row += "{t.normal}  |  {t.bold_red}" + x[1]
 				else:
-					new_row += "  |  {t.bold_green}" + x[1]
-			new_row += "  |"
+					new_row += "{t.normal}  |  {t.bold_green}" + x[1]
+			new_row += "{t.normal}  |"
 			print(new_row.format(t=t))
-			print("   --------------------------------------------------------------")
+			print("{t.normal}     -------------------------------------------------------------".format(t=t))
 			xaxis += "     {t.normal}" + str(key)
 		print(xaxis.format(t=t))
 
 	def display_computers_board(self,board):
 		'''This will display like display_own_board except
 		with the ships masked'''
-		xaxis1 = "  "
-		xaxis2 = "  "
+		xaxis = "   "
 		for key, value in enumerate(board):
-			new_row = "{t.normal}" + str(key) + "|"
+			new_row = "{t.normal}  " + str(key)
 			for x in value:
 				if x[1] == "M":
-					new_row += "    {t.bold_blue}" + x[1]
+					new_row += "{t.normal}  |  {t.bold_blue}" + x[1]
 				elif x[1] == "O":
-					new_row += "    {t.normal}" + x[1]
+					new_row += "{t.normal}  |  {t.normal}" + " "
 				elif x[1] == "X":
-					new_row += "    {t.bold_red}" + x[1]
+					new_row += "{t.normal}  |  {t.bold_red}" + x[1]
 				else:
-					new_row += "    {t.normal}" + "O"
-					#if you want to see computer's ships comment out the line above
-					# and initiate the line below
-					# new_row += "    {t.green}" + x
+					new_row += "{t.normal}  |  {t.normal}" + " "
+			new_row += "{t.normal}  |"
 			print(new_row.format(t=t))
-			print("")
-			xaxis2 += "    {t.normal}" + str(key)
-			xaxis1 += "    {t.normal}"  + "-"
-		print(xaxis1.format(t=t))
-		print(xaxis2.format(t=t))
-
+			print("{t.normal}     -------------------------------------------------------------".format(t=t))
+			xaxis += "     {t.normal}" + str(key)
+		print(xaxis.format(t=t) +"\n")
 
 	def place_ship(self,ship,active_player):
 		os.system('clear')
@@ -92,7 +86,6 @@ class Views:
 		The computer's board will always be at the top (with obscured ships) 
 		and the player's board at the bottom'''
 		os.system('clear')
-		print("")
 		if active_player.iscomputer == False:
 			print(opposing_player.name+"\n")
 			self.display_computers_board(opposing_player.board.board)
@@ -110,9 +103,9 @@ class Views:
 				os.system('afplay woosh.mp3')
 		else:
 			#Fix coords
-			print(active_player.name)
+			print(active_player.name+"\n")
 			self.display_computers_board(active_player.board.board)
-			print(opposing_player.name)
+			print(opposing_player.name+"\n")
 			self.display_own_board(opposing_player.board.board)
 			if hit_miss == True and ship_sunk != None:
 				print("Computer hit at {0}".format(coords))
