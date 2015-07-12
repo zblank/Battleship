@@ -12,25 +12,23 @@ class Views:
 		pass
 
 	def display_own_board(self,board):
-		xaxis1 = "  "
-		xaxis2 = "  "
+		xaxis = " "
 		for key, value in enumerate(board):
-			new_row = "{t.normal}" + str(key) + "|"
+			new_row = "{t.normal}  " + str(key)
 			for x in value:
 				if x[1] == "M":
-					new_row += "    {t.bold_blue}" + x[1]
+					new_row += "  |  {t.bold_blue}" + x[1]
 				elif x[1] == "O":
-					new_row += "    {t.normal}" + x[1]
+					new_row += "  |  {t.normal}" + x[1]
 				elif x[1] == "X":
-					new_row += "    {t.bold_red}" + x[1]
+					new_row += "  |  {t.bold_red}" + x[1]
 				else:
-					new_row += "    {t.bold_green}" + x[1]
+					new_row += "  |  {t.bold_green}" + x[1]
+			new_row += "  |"
 			print(new_row.format(t=t))
-			print("")
-			xaxis2 += "    {t.normal}" + str(key)
-			xaxis1 += "    {t.normal}"  + "-"
-		print(xaxis1.format(t=t))
-		print(xaxis2.format(t=t))
+			print("   --------------------------------------------------------------")
+			xaxis += "     {t.normal}" + str(key)
+		print(xaxis.format(t=t))
 
 	def display_computers_board(self,board):
 		'''This will display like display_own_board except
@@ -66,10 +64,10 @@ class Views:
 		self.display_own_board(active_player.board.board)
 		print ("Where would you like to place the {0}".format(ship.name))
 		coordy,coordx,direction = None, None, None
-		while coordy not in [str(x) for x in range(0,10)]:
-			coordy = input("What is the y starting coordinate? ")
 		while coordx not in [str(x) for x in range(0,10)]:
 			coordx = input("What is the x starting coordinate? ")
+		while coordy not in [str(x) for x in range(0,10)]:
+			coordy = input("What is the y starting coordinate? ")
 		while direction not in ["l","r","d","u"]:
 			direction = input("Direction: ")
 		return int(coordx),int(coordy), direction
@@ -83,10 +81,10 @@ class Views:
 		coordy = None
 		coordx = None
 		print("Where would you like to strike?")
-		while coordy not in [str(x) for x in range(0,10)]:
-			coordy = input("What is the y coordinate ")
 		while coordx not in [str(x) for x in range(0,10)]:
 			coordx = input("What is the x coordinate ")
+		while coordy not in [str(x) for x in range(0,10)]:
+			coordy = input("What is the y coordinate ")
 		return int(coordy), int(coordx)
 
 	def hit_miss(self, hit_miss,ship_sunk,opposing_player,active_player,coords):
@@ -111,6 +109,7 @@ class Views:
 				print ("You missed!")
 				os.system('afplay woosh.mp3')
 		else:
+			#Fix coords
 			print(active_player.name)
 			self.display_computers_board(active_player.board.board)
 			print(opposing_player.name)
