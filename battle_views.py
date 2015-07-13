@@ -53,7 +53,7 @@ class Views:
 
 	def place_ship(self,ship,active_player):
 		os.system('clear')
-		print(t.bold("WELCOME PLAYER - PLACE YOUR SHIPS!!\n"))
+		print(t.bold_bright_blue("WELCOME PLAYER - PLACE YOUR SHIPS!!\n"))
 		#os.system('afplay gun.mp3')
 		self.display_own_board(active_player.board.board)
 		print ("Where would you like to place the {0}".format(ship.name))
@@ -68,9 +68,9 @@ class Views:
 
 	def ask_coords(self,opposing_player,active_player):
 		os.system('clear')
-		print(opposing_player.name+"\n")
+		print(t.bold_bright_blue(opposing_player.name+"\n"))
 		self.display_computers_board(opposing_player.board.board)
-		print(active_player.name+"\n")
+		print(t.bold_bright_blue(active_player.name+"\n"))
 		self.display_own_board(active_player.board.board)
 		coordy = None
 		coordx = None
@@ -87,9 +87,9 @@ class Views:
 		and the player's board at the bottom'''
 		os.system('clear')
 		if active_player.iscomputer == False:
-			print(opposing_player.name+"\n")
+			print(t.bold_bright_blue(opposing_player.name+"\n"))
 			self.display_computers_board(opposing_player.board.board)
-			print(active_player.name+"\n")
+			print(t.bold_bright_blue(active_player.name+"\n"))
 			self.display_own_board(active_player.board.board)
 			if hit_miss == True and ship_sunk != None:
 				print("You hit!")
@@ -103,9 +103,9 @@ class Views:
 				os.system('afplay woosh.mp3')
 		else:
 			ycoord, xcoord = coords
-			print(active_player.name+"\n")
+			print(t.bold_bright_blue(active_player.name+"\n"))
 			self.display_computers_board(active_player.board.board)
-			print(opposing_player.name+"\n")
+			print(t.bold_bright_blue(opposing_player.name+"\n"))
 			self.display_own_board(opposing_player.board.board)
 			if hit_miss == True and ship_sunk != None:
 				print("Computer hit at {0},{1}".format(xcoord,ycoord))
